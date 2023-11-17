@@ -1,0 +1,312 @@
+<?php 
+  require 'CrudFunctions.php';
+  require 'filter.php';
+  require "db.php";
+  $student ;
+  $req="SELECT * FROM stage ";
+  $result =$pdo->prepare($req);
+  $result->execute();
+  $student = $result->fetchAll(PDO::FETCH_OBJ);
+?>
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="output.css" rel="stylesheet">
+  <link rel="stylesheet" href="output.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="script.js"></script>
+</head>
+
+<body>
+  <div class="">
+    <!-- this is a fixed Navigation bar at the right -->
+    <div class="NavBar w-64 bg-green-600 h-screen fixed top-0 left-0 p-4 ">
+      <ul class="text-black font-extrabold mb-9">
+        <li class="mb-36 bg-white">
+          <a href="https://www.emsi.ma/">
+            <img src="https://www.emsi.ma/wp-content/uploads/2020/07/logo-1.png" alt="EMSI Logo">
+          </a>
+        </li>
+        <li class="mb-36">
+          <a href="">Gestion de Stage</a>
+        </li>
+        <li class="mb-36">
+          <a href="">Gestion de Stagiere</a>
+        </li>
+        <li class="mb-36">
+          <a href="">blank</a>
+        </li>
+      </ul>
+    </div> 
+    <!--the end of NavBar-->   
+
+    <!-- gestion des etudiants  -->
+    <!-- afficher les stagiaires dans un tableau-->
+    
+    <div class="ml-64 ">
+      <p class="text-4xl mt-6 mb-6 ml-8 text-green-600 text-center">gestion des Stage </p>
+      <!--recherchre -->
+      <div class=" grid grid-cols-4 gap-0">
+
+        <form action="" method="post" class="flex col-start-2  w-full mt-10">
+          <p class="text-2xl mt-6 mb-6 ml-8 font-bold ">search:</p>
+          <input class="ml-4 border-2 w-40 h-8 mt-6 border-red-600 rounded-md" name="thename" type="text">
+          <?php $student=searchByName($student); ?>
+        </form>
+      
+
+      <!-- Filiere filtre-->
+      <form action="" class="flex col-start-3 col-span-2" method="post">
+          <select id="underline_select" name="class" class=" text-center hover:bg-green-400 hover:text-black hover:font-bold block py-2.5 px-0 w-1/4 text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 ">
+            <option selected value="all" >Class</option>
+            <option value="1AP">1AP</option>
+            <option value="1GC">1GC</option>
+            <option value="1IFA">1IFA</option>
+            <option value="2AP">2AP</option>
+            <option value="2GC">2GC</option>
+            <option value="2IFA">2IFA</option>
+            <option value="3GC">3GC</option>
+            <option value="3GI">3GI</option>
+            <option value="3IAII">3IAII</option>
+            <option value="3IFA">3IFA</option>
+            <option value="3IIR">3IIR</option>
+            <option value="4GC">4GC</option>
+            <option value="4GI">4GI</option>
+            <option value="4IAII">4IAII</option>
+            <option value="4IFA">4IFA</option>
+            <option value="4IIR">4IIR</option>
+            <option value="5GC">5GC</option>
+            <option value="5GI">5GI</option>
+            <option value="5IAII">5IAII</option>
+            <option value="D5IFE">5IF</option>
+            <option value="5MG">5MG</option>
+          </select>
+          <input type="submit" value="filtre" name="filtre" class=" border-2 w-20 h-8 mt-6 ml-4 bg-green-700 text-white font-bold">
+          <button ></button>
+          <?php $student=filterClass($student);?>
+        </form>
+
+      </div>
+      <!-- radio botton -->
+      <div class="flex justify-center " id="1">
+        <div class="flex items-center pl-4 border border-gray-200 rounded bg-green-500  w-1/4">
+          <input id="RBSE" type="radio" value="" name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+          <label for="RBSE" class="w-full py-4 ml-2 flex justify-center font-medium text-gray-900 text-lg">stage d'ete </label>
+        </div>
+        <div class="flex items-center pl-4 border border-gray-200 rounded bg-green-500  w-1/4 ">
+          <input id="RBPFE" type="radio" value="" name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+          <label for="RBPFE" class="w-full py-4 ml-2 flex justify-center font-medium text-gray-900 text-lg">PFE</label>
+        </div>
+
+      </div>
+      <!--tables of content-->
+      <!--table of SE-->
+      <div class=" ml-8 mt-8  " id="TSE" style="display :block;">
+      <table class="text-left border-separate border-2" >
+        <thead class="bg-green-600 flex text-black font-bold  ">
+          <tr class="grid grid-cols-9 gap-0 text-center ">
+            <th class="p-4 border border-slate-600 w-44">matricule</th>
+            <th class="p-4 border border-slate-600 w-44">Nom & prenom </th>
+            <th class="p-4 border border-slate-600 w-44">Entreprise</th>
+            <th class="p-4 border border-slate-600 w-44">sujet</th>
+            <th class="p-4 border border-slate-600 w-44">date debut</th>
+            <th class="p-4 border border-slate-600 w-44">date fin</th>
+            <th class="p-4 border border-slate-600 w-44">convention empruntee </th>
+            <th class="p-4 border border-slate-600 w-44">convention recu </th>
+            <th class="p-4 border border-slate-600 w-40">observation</th>
+          </tr>
+        </thead>
+          <tbody class="bg-gray-400 text-black flex flex-col overflow-y-scroll " style="height: 50vh;">
+            <?php foreach($student as $p):?>
+              <tr class="grid grid-cols-9 gap-0">
+                  <td class="p-4 w-44 border-2 border-black"><?=$p->matricule?></td>
+                  <td class="p-4 w-44 border-2 border-black "><?=$p->nom?></td>
+                  <td class="p-4 w-44 border-2 border-black "><?=$p->entreprise?></td>
+                  <td class="p-4 w-44 border-2 border-black "><?=$p->sujet?></td>
+                  <td class="p-4 w-44 border-2 border-black "><?=$p->datedebut?></td>
+                  <td class="p-4 w-44 border-2 border-black "><?=$p->datefin?></td>
+                  <td class="p-4 w-44 border-2 border-black "><?=$p->convention_empruntee?></td>
+                  <td class="p-4 w-44 border-2 border-black "><?=$p->convention_recu?></td>
+                  <td class="p-4 w-44 border-2 border-black "><?=$p->observation?></td>
+              </tr>
+            <?php endforeach ?>
+        </tbody>
+      </table>
+    </div>
+    <!-- table of content -->
+    <!--Table of PFE-->
+    <div class="ml-8 mt-8" id="TPFE" style="display: none;">
+      <table class="text-left border-separate border-2">
+        <thead class="bg-green-600 text-black font-bold">
+          <tr class="grid grid-cols-12 text-center ">
+            <th class="p-4 w-32 border border-slate-600 ">matricule</th>
+            <th class="p-4 w-32 border border-slate-600">Nom & prenom</th>
+            <th class="p-4 w-32 border border-slate-600">Entreprise</th>
+            <th class="p-4 w-32 border border-slate-600">sujet</th>
+            <th class="p-4 w-32 border border-slate-600">duree</th>
+            <th class="p-4 w-32 border border-slate-600">date debut</th>
+            <th class="p-4 w-32 border border-slate-600">date fin</th>
+            <th class="p-4 w-32 border border-slate-600">convention empruntee </th>
+            <th class="p-4 w-32 border border-slate-600">convention recu </th>
+            <th class="p-4 w-32 border border-slate-600">fiche</th>
+            <th class="p-4 w-32 border border-slate-600">encadrant ecole </th>
+            <th class="p-4 w-32 border border-slate-600">encadrant stage </th>
+          </tr>
+        </thead>
+        <tbody class="bg-gray-400 text-black flex flex-col overflow-y-scroll" style="height: 50vh; ">
+          <?php foreach ($student as $p): ?>
+            <tr class="grid grid-cols-12">
+              <td class="p-4 w-32 "><?=$p->matricule?></td>
+              <td class="p-4 w-32 "><?=$p->nom?></td>
+              <td class="p-4 w-32 "><?=$p->entreprise?></td>
+              <td class="p-4 w-32 "><?=$p->sujet?></td>
+              <td class="p-4 w-32 "><?=$p->duree?></td>
+              <td class="p-4 w-32 "><?=$p->datedebut?></td>
+              <td class="p-4 w-32 "><?=$p->datefin?></td>
+              <td class="p-4 w-32 "><?=$p->convention_empruntee?></td>
+              <td class="p-4 w-32 "><?=$p->convention_recu?></td>
+              <td class="p-4 w-32 "><?=$p->fiche?></td>
+              <td class="p-4 w-32 "><?=$p->encadrant_ecole?></td>
+              <td class="p-4 w-32 "><?=$p->encadrant_de_stage?></td>
+            </tr>
+          <?php endforeach ?>
+        </tbody>
+      </table>
+  </div>
+
+
+    <!--formulaire pour Stage d'ete -->
+
+    <div class="bg-slate-500 ml-52  mr-6  mt-5 w-1/2 " id="FormSE">
+      <p class="flex justify-center bg-stone-900 w-full fonr-bold p-2 mb-2 text-lg text-green-600">Stage d'ete Form :</p>
+      <form class="ml-4 p-2 mb-3 font-bold " method='POST' action="">
+        <div class="grid gap-2 grid-cols-4">
+          <label for=""> matricule</label>
+          <input class="" type="text" name='matricule'>
+          <label for="">entreprise</label>
+          <input class="" type="text" name='entreprise'>
+          <label class=" " for="">sujet</label>
+          <input class="" type="text" name='sujet'>
+          <!-- end select -->
+          <label class="" for="">date Debut</label>
+          <input class="" type="date" name='datedebut'>
+          <label class="" for="">date Fin</label>
+          <input class="" type="date" name='datedebut'>
+          <!--cs-->
+          <label class="" for="">convention empruntee</label>
+          <select id="Cnveid" name="cnve" class=" text-center  block  font-bold  text-sm text-black bg-white border-0  focus:outline-none focus:ring-0 focus:border-gray-200 ">
+            <option selected ></option>
+            <option value="oui">oui</option>
+            <option value="non">non</option>
+          </select>
+          <label class="" for="">convention recu</label>
+          <select id="Cnvrid" name="cnvr" class=" text-center  block  font-bold  text-sm text-black bg-white border-0  focus:outline-none focus:ring-0 focus:border-gray-200 ">
+            <option selected ></option>
+            <option value="oui">oui</option>
+            <option value="non">non</option>
+          </select>
+          <label class="" for="">observation</label>
+          <input class="" type="text" name='observation'>
+
+        </div>
+        <p class="">
+        <?php
+          if(isset($msg)){
+            echo $msg;
+          }
+          ?>
+        </p>
+        <!-- buttons contanier -->
+        <div class=" grid grid-cols-4 mt-5 gap-0">
+
+          <input class="font-bold col-start-2 rounded-md h-16 bg-green-400 text-black mt-2 mb-2 p-2" type="submit" name="modify" value="Modify">
+          <?php modifydata();?>
+          <input class="font-bold rounded-md h-16 bg-blue-500 text-white mt-2 mb-2 p-2" type="submit" name="delete" value="delete">
+          <?php delete();?>
+          
+        </div>
+
+        
+
+      </form>
+    </div>
+        <!--formulaire pour Stage PFE -->
+
+        <div class="bg-slate-500 ml-52  mr-6  mt-5 w-1/2 " id="FormPFE" style="display: none;">
+          <p class="flex justify-center bg-stone-900 w-full fonr-bold p-2 mb-2 text-lg text-green-600">Stage d'ete Form :</p>
+          <form class="ml-4 p-2 mb-3 font-bold " method='POST' action="">
+            <div class="grid gap-2 grid-cols-4">
+              <label for=""> matricule</label>
+              <input class="" type="text" name='matricule'>
+              <label for="">entreprise</label>
+              <input class="" type="text" name='entreprise'>
+              <label class=" " for="">sujet</label>
+              <input class="" type="text" name='sujet'>
+              <!--select -->
+              <label class=" " for="">dureee</label>
+              <select id="dureeid" name="class" class=" text-center  block  font-bold  text-sm text-black bg-white border-0  focus:outline-none focus:ring-0 focus:border-gray-200 ">
+                <option selected ></option>
+                <option value="1m">1 mois</option>
+                <option value="2m">2 mois</option>
+              </select>
+              <!-- end select -->
+              <label class="" for="">date Debut</label>
+              <input class="" type="date" name='datedebut'>
+              <label class="" for="">date Fin</label>
+              <input class="" type="date" name='datedebut'>
+              <!--cs-->
+              <label class="" for="">convention empruntee</label>
+              <select id="Cnveid" name="cnve" class=" text-center  block  font-bold  text-sm text-black bg-white border-0  focus:outline-none focus:ring-0 focus:border-gray-200 ">
+                <option selected ></option>
+                <option value="oui">oui</option>
+                <option value="non">non</option>
+              </select>
+              <label class="" for="">convention recu</label>
+              <select id="Cnvrid" name="cnvr" class=" text-center  block  font-bold  text-sm text-black bg-white border-0  focus:outline-none focus:ring-0 focus:border-gray-200 ">
+                <option selected ></option>
+                <option value="oui">oui</option>
+                <option value="non">non</option>
+              </select>
+              <label class="" for="">fiche</label>
+              <select id="" name="fiche" class=" text-center  block  font-bold  text-sm text-black bg-white border-0  focus:outline-none focus:ring-0 focus:border-gray-200 ">
+                <option selected ></option>
+                <option value="oui">oui</option>
+                <option value="non">non</option>
+              </select>
+              <label class="" for="">encadrant ecole</label>
+              <input class="" type="text" name='encadrantEcole'>
+              <label class="col-start-2" for="">encadrant de stage</label>
+              <input class="" type="text" name='EncadrantStage'>
+    
+            </div>
+            <p class="">
+            <?php
+              if(isset($msg)){
+                echo $msg;
+              }
+              ?>
+            </p>
+            <!-- buttons contanier -->
+            <div class=" grid grid-cols-4 mt-5 gap-0">
+    
+              <input class="font-bold col-start-2 rounded-md h-16 bg-green-400 text-black mt-2 mb-2 p-2" type="submit" name="modify" value="Modify">
+              <?php modifydata();?>
+              <input class="font-bold rounded-md h-16 bg-blue-500 text-white mt-2 mb-2 p-2" type="submit" name="delete" value="delete">
+              <?php delete();?>
+              
+            </div>
+    
+            
+    
+          </form>
+        </div>
+
+  </div>
+ </div>
+
+</body>
+
+</html>
